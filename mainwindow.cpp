@@ -6,6 +6,12 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    QSqlQueryModel *model = new QSqlQueryModel();
+    model->setQuery("SELECT * FROM Книги");
+
+    QWidget->findChild<QTableView*>("tableView");
+    tableView->setModel(model);
 }
 
 MainWindow::~MainWindow()

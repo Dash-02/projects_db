@@ -5,6 +5,11 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QMessageBox>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QDebug>
+#include <QCoreApplication>
+#include <QDir>
 
 namespace Ui {
 class auth;
@@ -13,6 +18,7 @@ class auth;
 class auth : public QWidget
 {
     Q_OBJECT
+    QSqlDatabase db;
     bool isAdmin;
 
 public:
@@ -23,6 +29,7 @@ private slots:
     void exitApplication(); // Слот для выхода из приложения
     // bool Login(); // Слот для проверки авторизации
     void funcAuth(); // Слот для авторизации
+    void execMainWin(); // Слот для открытия нового окна и закрытия текущего
 
 private:
     Ui::auth *ui;

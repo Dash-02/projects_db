@@ -12,13 +12,25 @@ auth::auth(QWidget *parent) :
     // connect(ui -> linePass, &QLineEdit::text, this, &auth::Login);
     connect(ui -> btnAuth, &QPushButton::clicked, this, &auth::funcAuth);
     QT_FEATURE_pushbutton;
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("/home/darlix/Рабочий стол/e/projects_db/db/Library.db");
 
+    if (!db.open()) {
+        qDebug() << "Ошибка соединения с базой данных:" << db.lastError().text();
+
+    }
+    db.close();
 }
 
 auth::~auth()
 {
     delete ui;
 }
+
+// Например, выполним запрос для создания таблицы
+// QSqlQuery query;
+// query.exec("CREATE TABLE IF NOT EXISTS myTable (id INTEGER PRIMARY KEY, name TEXT)");
+
 
 void auth::exitApplication()
 {
@@ -46,15 +58,11 @@ void auth::funcAuth()
     if(log == "admin" && pass == "admin")
     {
         isAdmin = true;
-        MainWindow *m = new MainWindow();
-        m->show();
-        this->close();
+        execMainWin();
     } else if(log == "user" && pass == "user")
     {
         isAdmin = false;
-        MainWindow *m = new MainWindow();
-        m->show();
-        this->close();
+        execMainWin();
     } else {
         isAdmin = false;
         QMessageBox::critical(this, "Ошибка", "Неверный логин или пароль");
@@ -69,4 +77,11 @@ void auth::funcAuth()
     // else {
     //     QMessageBox::critical(this, "Ошибка", "Неверный логин или пароль");
     // }
+}
+
+void auth::execMainWin()
+{
+    MainWindow *m = new MainWindow();
+    m->show();
+    this->close();
 }
