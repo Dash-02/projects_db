@@ -10,6 +10,8 @@
 #include <QDebug>
 #include <QCoreApplication>
 #include <QDir>
+#include <QSqlQuery>
+#include <QSqlError>
 
 namespace Ui {
 class auth;
