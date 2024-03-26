@@ -27,11 +27,6 @@ auth::~auth()
     delete ui;
 }
 
-// Например, выполним запрос для создания таблицы
-// QSqlQuery query;
-// query.exec("CREATE TABLE IF NOT EXISTS myTable (id INTEGER PRIMARY KEY, name TEXT)");
-
-
 void auth::exitApplication()
 {
     QApplication::quit(); // Выход из приложения
@@ -55,7 +50,7 @@ void auth::funcAuth()
     QString log = ui->lineLogin->text();
     QString pass = ui->linePass->text();
 
-    if(log == "admin" && pass == "admin")
+    if(log == "sukuna" && pass == "admin")
     {
         isAdmin = true;
         execMainWin();

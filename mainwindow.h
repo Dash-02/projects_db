@@ -8,6 +8,11 @@
 #include <QTableView>
 #include <QVBoxLayout>
 #include <QFile>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QDebug>
+#include <QCoreApplication>
+#include <QDir>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -26,5 +31,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QSqlDatabase db;
+    QSqlQueryModel *model;
 };
 #endif // MAINWINDOW_H
