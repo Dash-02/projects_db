@@ -1,7 +1,7 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef ARRIWAL_H
+#define ARRIWAL_H
 
-#include <QMainWindow>
+#include <QWidget>
 #include <QApplication>
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
@@ -17,31 +17,29 @@
 #include <QSqlQuery>
 #include <QObject>
 #include <QLineEdit>
-#include <QIntValidator>
 
-QT_BEGIN_NAMESPACE
 namespace Ui {
-class MainWindow;
+class arriwal;
 }
-QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class arriwal : public QWidget
 {
     Q_OBJECT
-    QTableView *tableView;
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    explicit arriwal(QWidget *parent = nullptr);
+    ~arriwal();
 
 private:
+    Ui::arriwal *ui;
+
     void exitApplication();
     void addBook();
     void deleteBook();
     void updateBookField();
     void openTabProdForm();
-    void openTabArriwal();
-    Ui::MainWindow *ui;
+    void openForm();
+
     QSqlDatabase db;
     QSqlQueryModel *model;
     QPushButton *ExitBtn;
@@ -51,4 +49,5 @@ private:
     QPushButton *tabProdBtn;
     QPushButton *tabArriwal;
 };
-#endif // MAINWINDOW_H
+
+#endif // ARRIWAL_H

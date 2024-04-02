@@ -1,26 +1,21 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include "tabprod.h"
+#include "ui_tabprod.h"
+#include "mainwindow.h"
 #include "arriwal.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+tabProd::tabProd(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::tabProd)
 {
     ui->setupUi(this);
-    connect(ui->ExitBtn, &QPushButton::clicked, this, &MainWindow::exitApplication);
-    connect(ui->AddBtn, &QPushButton::clicked, this, &MainWindow::addBook);
+    connect(ui->ExitBtn, &QPushButton::clicked, this, &tabProd::exitApplication);
+    connect(ui->AddBtn, &QPushButton::clicked, this, &tabProd::addBook);
     // Подключение сигнала нажатия кнопки к слоту deleteBook()
-    connect(ui->DeleteBtn, &QPushButton::clicked, this, &MainWindow::deleteBook);
+    connect(ui->DeleteBtn, &QPushButton::clicked, this, &tabProd::deleteBook);
     // Подключение сигнала нажатия кнопки к слоту updateBook()
-    connect(ui->UpdateBtn, &QPushButton::clicked, this, &MainWindow::updateBookField);
-    connect(ui->tabProdBtn, &QPushButton::clicked, this, &MainWindow::openTabProdForm);
-    connect(ui->tabArriwal, &QPushButton::clicked, this, &MainWindow::openTabArriwal);
-    QIntValidator *validator = new QIntValidator(this);
-
-    // Устанавливаем валидатор для поля ввода
-    ui->lineEdit_5->setValidator(validator);
-    ui->lineEdit_6->setValidator(validator);
+    connect(ui->UpdateBtn, &QPushButton::clicked, this, &tabProd::updateBookField);
+    connect(ui->back, &QPushButton::clicked, this, &tabProd::openForm);
+    connect(ui->tabArriwal, &QPushButton::clicked, this, &tabProd::openFormArriwal);
 
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("/home/darlix/Рабочий стол/e/projects_db/db/library.db");
@@ -31,17 +26,17 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     model = new QSqlQueryModel(this);
-    model->setQuery("SELECT * FROM Books", db);
+    model->setQuery("SELECT * FROM Sales", db);
 
     ui->tableView->setModel(model);
 }
 
-void MainWindow::exitApplication()
+void tabProd::exitApplication()
 {
     QApplication::quit();
 }
 
-void MainWindow::addBook()
+void tabProd::addBook()
 {
     QString nameBook = ui->lineEdit->text();
     QString genre = ui->lineEdit_2->text();
@@ -65,11 +60,11 @@ void MainWindow::addBook()
         return;
     }
 
-    model->setQuery("SELECT * FROM Books", db);
+    model->setQuery("SELECT * FROM Sales", db);
 }
 
 // Удаление выбранного элемента из таблицы
-void MainWindow::deleteBook() {
+void tabProd::deleteBook() {
     // Получаем индекс выбранной строки в таблице
     QModelIndexList selectedIndexes = ui->tableView->selectionModel()->selectedRows();
 
@@ -95,10 +90,10 @@ void MainWindow::deleteBook() {
     }
 
     // Обновляем модель данных, чтобы отобразить изменения в tableView
-    model->setQuery("SELECT * FROM Books", db);
+    model->setQuery("SELECT * FROM Sales", db);
 }
 
-void MainWindow::updateBookField() {
+void tabProd::updateBookField() {
     // Получаем индекс выбранной ячейки
     QModelIndex selectedIndex = ui->tableView->currentIndex();
 
@@ -109,7 +104,7 @@ void MainWindow::updateBookField() {
     int id = model->data(model->index(selectedIndex.row(), 0)).toInt();
 
     // Получаем новое значение поля для обновления
-    QString newValue = ui->lineEdit_7->text(); // Предполагается, что у вас есть QLineEdit для ввода нового значения
+    QString newValue = ui->lineEdit_4->text(); // Предполагается, что у вас есть QLineEdit для ввода нового значения
 
     // Получаем название столбца по его номеру
     QString columnName = model->headerData(column, Qt::Horizontal).toString();
@@ -126,28 +121,22 @@ void MainWindow::updateBookField() {
         return;
     }
 
-     model->setQuery("SELECT * FROM Books", db);
+    model->setQuery("SELECT * FROM Sales", db);
 }
 
-void MainWindow::openTabProdForm() {
-     // Создаем экземпляр формы tabProd
-     tabProd *tabProdForm = new tabProd();
-
-     // Открываем форму
-     tabProdForm->show();
-     this->close();
+void tabProd::openForm() {
+    MainWindow *m = new MainWindow();
+    m->show();
+    this->close();
 }
 
-void MainWindow::openTabArriwal() {
-     // Создаем экземпляр формы tabProd
-     arriwal *a = new arriwal();
-
-     // Открываем форму
-     a->show();
-     this->close();
+void tabProd::openFormArriwal() {
+    arriwal *a = new arriwal();
+    a->show();
+    this->close();
 }
 
-MainWindow::~MainWindow()
+tabProd::~tabProd()
 {
     delete ui;
 }

@@ -12,14 +12,14 @@ auth::auth(QWidget *parent) :
     // connect(ui -> linePass, &QLineEdit::text, this, &auth::Login);
     connect(ui -> btnAuth, &QPushButton::clicked, this, &auth::funcAuth);
     QT_FEATURE_pushbutton;
-    // db = QSqlDatabase::addDatabase("QSQLITE");
-    // db.setDatabaseName("/home/darlix/Рабочий стол/e/projects_db/db/Library.db");
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("/home/darlix/Рабочий стол/e/projects_db/db/library.db");
 
-    // if (!db.open()) {
-    //     qDebug() << "Ошибка соединения с базой данных:" << db.lastError().text();
+    if (!db.open()) {
+         qDebug() << "Ошибка соединения с базой данных:" << db.lastError().text();
 
-    // }
-    // db.close();
+     }
+     db.close();
 }
 
 auth::~auth()
@@ -50,6 +50,9 @@ void auth::funcAuth()
     QString log = ui->lineLogin->text();
     QString pass = ui->linePass->text();
     // Открываем соединение с базой данных
+    qDebug() << "Пытаюсь открыть базу данных...";
+    qDebug() << "Путь к базе данных:" << db.databaseName();
+
     if (!db.open()) {
         qDebug() << "Ошибка соединения с базой данных:" << db.lastError().text();
         return;
@@ -57,7 +60,7 @@ void auth::funcAuth()
 
     // Подготавливаем SQL-запрос для получения данных пользователя с указанным логином и паролем
     QSqlQuery query;
-    query.prepare("SELECT * FROM Users WHERE log = :login AND pass = :password");
+    query.prepare("SELECT * FROM Users WHERE login = :login AND password = :password");
     query.bindValue(":login", log);
     query.bindValue(":password", pass);
 

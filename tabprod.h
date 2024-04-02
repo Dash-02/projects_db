@@ -1,7 +1,7 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef TABPROD_H
+#define TABPROD_H
 
-#include <QMainWindow>
+#include <QWidget>
 #include <QApplication>
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
@@ -17,38 +17,37 @@
 #include <QSqlQuery>
 #include <QObject>
 #include <QLineEdit>
-#include <QIntValidator>
 
-QT_BEGIN_NAMESPACE
 namespace Ui {
-class MainWindow;
+class tabProd;
 }
-QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class tabProd : public QWidget
 {
     Q_OBJECT
-    QTableView *tableView;
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    explicit tabProd(QWidget *parent = nullptr);
+    ~tabProd();
 
 private:
     void exitApplication();
     void addBook();
     void deleteBook();
     void updateBookField();
-    void openTabProdForm();
-    void openTabArriwal();
-    Ui::MainWindow *ui;
+    void openForm();
+    void openFormArriwal();
+
+    Ui::tabProd *ui;
+
     QSqlDatabase db;
     QSqlQueryModel *model;
     QPushButton *ExitBtn;
     QPushButton *AddBtn;
     QPushButton *DeleteBtn;
     QPushButton *UpdateBtn;
-    QPushButton *tabProdBtn;
+    QPushButton *back;
     QPushButton *tabArriwal;
 };
-#endif // MAINWINDOW_H
+
+#endif // TABPROD_H
